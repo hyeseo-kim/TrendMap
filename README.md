@@ -52,19 +52,19 @@ Spring Boot 기반의 **지역 실시간 트렌드 시각화 플랫폼**입니�
 ## 🖼️ 주요 화면 구성
 
 ### 🎯 지역 통합 정보 페이지
-![지역 통합 정보] (/docs/images/overview.png)
+![지역 통합 정보](/docs/images/overview.png)
 
 ### 🏞️ 에디터 PICK + 블로그 콘텐츠
-![추천 장소 및 블로그 콘텐츠] (/docs/images/pick_and_content.png)
+![추천 장소 및 블로그 콘텐츠](/docs/images/pick_and_content.png)
 
 ### 🏨 호텔/펜션 검색 페이지
-![호텔 검색 결과] (/docs/images/hotel_search.png)
+![호텔 검색 결과](/docs/images/hotel_search.png)
 
 ### 🧭 여행 코스 리스트
-![여행 코스 페이지] (/docs/images/course_list.png)
+![여행 코스 페이지](/docs/images/course_list.png)
 
 ### 🗣️ 커뮤니티 제보 페이지
-![제보 게시판] (/docs/images/community.png)
+![제보 게시판](/docs/images/community.png)
 
 ---
 
@@ -80,11 +80,12 @@ Spring Boot 기반의 **지역 실시간 트렌드 시각화 플랫폼**입니�
 |       Web Crawling      |     Selenium, Jsoup                                         |
 |        Scheduler        |     Spring Scheduler                                        |
 |         API 활용         |     Google Maps API, OpenWeatherMap API                     |
-|          기타            |     Lombok, JSTL                                            |
+|         유틸리티          |     Lombok, JSTL                                            |
 
 ---
 
 ## 🗂️ 프로젝트 구조
+```
 radar/
 ├── controller/
 ├── service/
@@ -100,26 +101,26 @@ radar/
 ├── static/
 │ └── css, js, images
 └── application.properties
-
+```
 ---
 
 ## 🔧 실행 방법
 
 ### 1. `application.properties` 환경 설정
 ```properties
-spring.datasource.url=jdbc:mysql://localhost::3306/radar_db
+spring.datasource.url=jdbc:mysql://localhost:3306/radar_db
 spring.datasource.username=root
 spring.datasource.password=12345678
 spring.jpa.hibernate.ddl-auto=update
-google.api.key=AIzaSyDkGAzjASQ7feLdVZ8yyJTlL9zH8TJIeMo
-openweather.api.key=1a16b58efd6826d165ed07e9a999e721
+google.api.key=YOUR_GOOGLE_API_KEY
+openweather.api.key=YOUR_OPENWEATHER_API_KEY
 ```
 
 ### 2. Gradle 빌드 및 서버 실행
 ./gradlew bootRun
 
-### 3. 접속
-http://localhost:8080/realtime-news?region=수원
+### 3. 브라우저에서 접속
+[http://localhost:8080/realtime-news?region=수원](http://localhost:8080/realtime-news?region=수원)
 
 ---
 
