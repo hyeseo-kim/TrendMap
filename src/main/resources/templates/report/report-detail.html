@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>제보 상세보기</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <style>
+        .report-header {
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+        .badge-live {
+            font-size: 12px;
+            color: #ff5722;
+            border: 1px solid #ff5722;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+            background-color: #fff8f4;
+        }
+        .view-count {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .report-image {
+            max-width: 600px;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: block;
+            margin: 20px auto;
+        }
+        .vote-btn {
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-recommend {
+            background-color: #ff4500;
+            color: white;
+            border: none;
+        }
+        .btn-dislike {
+            background-color: #e0e0e0;
+            color: black;
+            border: none;
+        }
+        .vote-count {
+            font-size: 18px;
+        }
+        .comment-form-box {
+            background-color: #f5f5f5;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+        .comment-list-box {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+        .comment-item {
+            background-color: #fcfcfc;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .highlight-comment {
+            background-color: #fff6e5;
+            border-color: #ffc107;
+        }
+        .reply-box {
+            background-color: #fdfdfd;
+            border-left: 4px solid #ddd;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+        .comment-meta {
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body class="container py-4">
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="report-header">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge badge-live">🔥 실시간 랭킹</span>
+        </div>
+        <div class="text-dark small d-flex gap-3 align-items-center">
+            <a href="/report" class="text-decoration-none text-dark">🗂 목록</a>
+
+            <a th:if="${previousReport != null}" th:href="@{'/report/detail/' + ${previousReport.id}}"
+               class="text-decoration-none text-dark">&lt; 이전글</a>
+            <span th:if="${previousReport == null}" class="text-muted">이전글 없음</span>
+
+            <a th:if="${nextReport != null}" th:href="@{'/report/detail/' + ${nextReport.id}}"
+               class="text-decoration-none text-dark">다음글 &gt;</a>
+            <span th:if="${nextReport == null}" class="text-muted">다음글 없음</span>
+        </div>
+    </div>
+
+    <h3 class="fw-bold mb-2" th:text="${report.title}">제보 제목</h3>
+    <div class="d-flex justify-content-between align-items-center text-muted small mb-3">
+        <div>
+            <span th:text="${report.category}">이슈</span> |
+            <span th:text="${report.region}">서울</span>
+        </div>
+        <div class="view-count text-danger" th:text="'조회 ' + ${report.views}">조회수</div>
+    </div>
+    <hr />
+</div>
+
+<div th:utext="${report.content}"></div>
+
+<div th:if="${report.imagePath != null}">
+    <img th:src="@{${report.imagePath}}" alt="첨부 이미지" class="report-image">
+</div>
+
+<div class="vote-section d-flex align-items-center justify-content-center gap-3 mt-4">
+    <div class="vote-count text-danger fw-bold fs-5" th:text="${report.likes}">8</div>
+    <form th:action="@{'/report/like/' + ${report.id}}" method="post">
+        <button type="submit" class="btn vote-btn btn-recommend">
+            👍 추천
+        </button>
+    </form>
+
+    <form th:action="@{'/report/dislike/' + ${report.id}}" method="post">
+        <button type="submit" class="btn vote-btn btn-dislike">
+            👎 반대
+        </button>
+    </form>
+    <div class="vote-count text-dark fw-bold fs-5" th:text="${report.dislikes}">0</div>
+</div>
+
+<hr class="mb-4" />
+
+<section class="comment-form-box">
+    <h5 class="fw-bold mb-4">🗨 댓글작성</h5>
+    <form th:action="@{/comment/add}" method="post">
+        <input type="hidden" name="reportId" th:value="${report.id}" />
+        <div class="d-flex flex-column gap-2">
+            <input type="text" name="author" class="form-control" placeholder="닉네임" required />
+            <textarea name="content" class="form-control" rows="3" placeholder="댓글 내용을 입력하세요" required></textarea>
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary mt-2">댓글 작성</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<section class="comment-list-box">
+    <div th:if="${hotComment != null}" class="comment-item highlight-comment">
+        <div class="d-flex justify-content-between">
+            <h6 class="fw-bold text-danger mb-2">🔥 인기 댓글</h6>
+            <small class="comment-meta" th:text="${hotComment.formattedDate}">작성일</small>
+        </div>
+        <strong th:text="${hotComment.author}" class="d-block">닉네임</strong>
+        <p th:text="${hotComment.content}" class="mb-2">댓글 내용</p>
+        <div class="d-flex gap-2">
+            <form th:action="@{/comment/like/{id}(id=${hotComment.id})}" method="post">
+                <input type="hidden" name="reportId" th:value="${report.id}" />
+                <button type="submit" class="btn btn-outline-danger btn-sm">👍 추천 <span th:text="${hotComment.likes}">0</span></button>
+            </form>
+            <form th:action="@{/comment/dislike/{id}(id=${hotComment.id})}" method="post">
+                <input type="hidden" name="reportId" th:value="${report.id}" />
+                <button type="submit" class="btn btn-outline-secondary btn-sm">👎 반대 <span th:text="${hotComment.dislikes}">0</span></button>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(comments)}" class="text-muted mb-3">아직 댓글이 없습니다.</div>
+    <div th:each="comment : ${comments}" th:if="${comment.parentId == null}" class="comment-item">
+        <div class="d-flex justify-content-between mb-1">
+            <strong th:text="${comment.author}">작성자</strong>
+            <small class="comment-meta" th:text="${comment.formattedDate}">작성일</small>
+        </div>
+        <p th:text="${comment.content}">댓글 내용</p>
+
+        <div class="d-flex gap-2 mb-2">
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="toggleReplyForm(this)">💬 답글 달기</button>
+            <button type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    th:attr="data-target-id='reply-list-' + ${comment.id}"
+                    onclick="toggleReplies(this)">
+                💬 답글보기 (<span th:text="${replyCountMap[comment.id]}">0</span>)
+            </button>
+        </div>
+
+        <div th:attr="id='reply-list-' + ${comment.id}" class="reply-list d-none">
+            <div th:each="reply : ${comments}" th:if="${reply.parentId == comment.id}" class="reply-box">
+                <div class="d-flex justify-content-between mb-1">
+                    <strong th:text="${reply.author}">답글 작성자</strong>
+                    <small class="comment-meta" th:text="${reply.formattedDate}">작성일</small>
+                </div>
+                <p th:text="${reply.content}">답글 내용</p>
+            </div>
+        </div>
+
+        <div class="reply-form d-none mt-2">
+            <form th:action="@{/comment/add}" method="post">
+                <input type="hidden" name="reportId" th:value="${report.id}" />
+                <input type="hidden" name="parentId" th:value="${comment.id}" />
+                <div class="d-flex flex-column gap-2">
+                    <input type="text" name="author" class="form-control form-control-sm" placeholder="답글 닉네임" required />
+                    <textarea name="content" class="form-control form-control-sm" rows="2" placeholder="답글 내용을 입력하세요" required></textarea>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-sm btn-secondary mt-1">답글 작성</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    function toggleReplyForm(button) {
+        const commentItem = button.closest('.comment-item');
+        const replyForm = commentItem.querySelector('.reply-form');
+        if (replyForm) replyForm.classList.toggle('d-none');
+    }
+
+    function toggleReplies(button) {
+        const targetId = button.getAttribute('data-target-id');
+        const replyList = document.getElementById(targetId);
+        if (!replyList) return;
+
+        replyList.classList.toggle('d-none');
+        const count = button.querySelector('span').outerHTML;
+        button.innerHTML = (replyList.classList.contains('d-none') ? '💬 답글보기 ' : '💬 답글숨기기 ') + count;
+        button.setAttribute('data-target-id', targetId);
+    }
+</script>
+</body>
+</html>

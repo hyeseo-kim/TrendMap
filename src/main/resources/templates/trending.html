@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>실시간 트렌드</title>
+</head>
+<body>
+
+<h2>실시간 트렌드</h2>
+<ul>
+  <li th:each="keyword : ${trendingKeywords}">
+    <span th:text="${keyword.keyword}">트렌드 키워드</span>
+  </li>
+</ul>
+
+</body>
+</html>

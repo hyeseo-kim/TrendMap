@@ -1,0 +1,31 @@
+<header style="border-bottom: 1px solid #ccc;">
+
+  <div class="container-fluid py-2 d-flex align-items-center justify-content-between px-4" style="background-color: #ffffff;">
+    <div class="text-center flex-grow-1">
+      <img src="/images/logo.png" alt="TrendMap 로고" style="height: 28px; margin-right: 8px;">
+      <span class="fw-bold text-dark fs-5">TrendMap</span>
+    </div>
+    <div style="width: 100px;"></div>
+  </div>
+
+  <div class="container-fluid d-flex justify-content-start align-items-center border-top pt-2 ps-1 px-4"
+       style="background-color: #f5f5f5;">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/realtime-news(region='수원')}">홈</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/travel-content">여행콘텐츠</a> <!-- 수정 -->
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/hotels}">상품예약</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/course/list}">여행코스</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/report}">커뮤니티</a>
+      </li>
+    </ul>
+  </div>
+</header>

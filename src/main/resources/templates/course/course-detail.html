@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${course.title} + ' - 풀코스 상세'">풀코스 상세</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=10599232e26ba7349d423556edb1a571&libraries=services"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #fff;
+            font-family: 'Noto Sans KR', sans-serif;
+            padding: 40px 24px;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .meta {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .icon-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 28px; /* 위아래 간격 */
+            margin-bottom: 32px;
+        }
+
+        .icon-row {
+            display: flex;
+            gap: 400px;
+        }
+
+        .icon-block {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .icon-value {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .icon-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #f5f6f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-title {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .icon-label {
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+            margin-top: 4px;
+            line-height: 1;
+        }
+        .icon-circle i,
+        .tag-circle i {
+            color: #FF4C4C;
+        }
+        .tag-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: 4px;
+        }
+        .tag-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #f5f6f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tag-badges {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 8px;
+        }
+        .tag-badge {
+            white-space: nowrap;
+            font-weight: bold;
+            background-color: #f5f6f8;
+            color: #333;
+            font-size: 13px;
+            padding: 4px 12px;
+            border-radius: 16px;
+        }
+        .course-map {
+            background-color: #f5f6f8;
+            height: 380px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            margin-top: 24px;
+        }
+    </style>
+
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container"
+     th:with="lat=${course.latitude != null ? course.latitude : 37.5665},
+              lng=${course.longitude != null ? course.longitude : 126.9780}">
+    <div class="d-flex justify-content-center align-items-center mb-1" style="gap: 8px;">
+        <span class="badge bg-danger px-2 py-1" style="font-size: 13px;" th:text="${locationCount + '코스'}">5코스</span>
+        <h2 th:text="${course.title}" style="font-weight: 700; font-size: 20px; margin: 0;">코스 제목</h2>
+    </div>
+
+    <div class="meta">
+        <span th:text="${course.region}">지역</span>
+        <span>&nbsp;|&nbsp;</span>
+        <span th:text="'코스 총거리: ' + ${course.distanceKm} + 'km'">코스 총거리: 14.85km</span>
+    </div>
+
+    <div class="d-flex align-items-center mb-3" style="gap: 24px;">
+        <div class="d-flex align-items-center" style="gap: 6px; cursor: pointer;" onclick="toggleLike()">
+            <i id="like-icon"
+               class="fa-heart fa-lg"
+               th:classappend="${liked} ? 'fa-solid' : 'fa-regular'"
+               style="color: #FF6F61;"></i>
+            <span id="like-count" th:text="${course.likes}">0</span>
+        </div>
+
+        <div class="d-flex align-items-center" style="gap: 6px;">
+            <i class="fa-regular fa-eye"></i>
+            <span th:text="${course.views}">0</span>
+        </div>
+    </div>
+    <div style="border-top: 1px solid #ddd; margin: 24px 0;"></div>
+
+    <div class="icon-section">
+        <div class="icon-row">
+            <div class="icon-block">
+                <div class="icon-value">
+                    <div class="icon-circle"><i class="fa-solid fa-calendar-days fa-lg"></i></div>
+                    <div class="icon-text">
+                        <p class="icon-title">일정</p>
+                        <p class="icon-label" th:text="${course.schedule}">당일여행</p>
+                    </div>
+                </div>
+            </div>
+            <div class="icon-block">
+                <div class="icon-value">
+                    <div class="icon-circle"><i class="fa-solid fa-leaf fa-lg"></i></div>
+                    <div class="icon-text">
+                        <p class="icon-title">테마</p>
+                        <p class="icon-label" th:text="${course.theme}">힐링코스</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tag-block">
+            <div class="tag-circle"><i class="fa-solid fa-tag fa-lg"></i></div>
+            <div>
+                <p class="icon-title">태그</p>
+                <div class="tag-badges">
+                <span th:each="t : ${#strings.arraySplit(course.tag, ' ')}"
+                      class="tag-badge"
+                      th:text="${t}">#힐링코스</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="border-top: 1px solid #ddd; margin: 24px 0;"></div>
+
+    <div class="course-summary" style="font-size: 14px; color: #555; line-height: 1.6; text-align: left;">
+        <p th:text="${course.description}">이 코스는 서울숲부터 시작해 갤러리아포레, 뚝섬한강공원을 따라 걷는 힐링 산책로입니다.</p>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const locations = /*[[${locations}]]*/ [];
+        console.log("📍 locations:", locations);
+        /*]]>*/
+    </script>
+
+    <div class="course-map" id="map"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (!window.kakao || !kakao.maps) {
+                console.error("❌ Kakao Maps SDK가 로딩되지 않음");
+                return;
+            }
+
+            if (!locations || !Array.isArray(locations) || locations.length === 0) {
+                console.warn("⚠️ 위치 정보가 없음");
+                return;
+            }
+
+            const container = document.getElementById('map');
+            const map = new kakao.maps.Map(container, {
+                center: new kakao.maps.LatLng(locations[0].latitude, locations[0].longitude),
+                level: 5
+            });
+
+            const path = [];
+
+            locations.forEach((loc, idx) => {
+                const position = new kakao.maps.LatLng(loc.latitude, loc.longitude);
+                path.push(position);
+
+                const marker = new kakao.maps.Marker({
+                    map: map,
+                    position: position,
+                    title: `${idx + 1}. ${loc.name}`
+                });
+
+                const content = `
+                    <div style="display: inline-flex; align-items: center; font-family: 'Noto Sans KR', sans-serif;">
+                        <div style="
+                            background: white;
+                            padding: 6px 14px;
+                            border-top-left-radius: 20px;
+                            border-bottom-left-radius: 20px;
+                            font-size: 13px;
+                            font-weight: 600;
+                            color: #333;
+                            border: 1px solid #001F60;
+                            border-right: none;
+                            height: 34px;
+                            display: flex;
+                            align-items: center;
+                        ">
+                            ${idx + 1}. ${loc.name}
+                        </div>
+                        <a href="https://search.naver.com/search.naver?query=${encodeURIComponent(loc.name)}"
+                           target="_blank"
+                           style="
+                            background: #001F60;
+                            color: white;
+                            padding: 0 12px;
+                            border-top-right-radius: 20px;
+                            border-bottom-right-radius: 20px;
+                            height: 34px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            text-decoration: none;
+                            border: 1px solid #001F60;
+                        ">
+                            <i class="fa-solid fa-chevron-right fa-sm"></i>
+                        </a>
+                    </div>
+                `;
+
+                new kakao.maps.CustomOverlay({
+                    map: map,
+                    position: position,
+                    content: content,
+                    yAnchor: 1
+                });
+            });
+
+            new kakao.maps.Polyline({
+                map: map,
+                path: path,
+                strokeWeight: 4,
+                strokeColor: '#FF6F61',
+                strokeOpacity: 0.9,
+                strokeStyle: 'solid'
+            });
+
+            setTimeout(() => kakao.maps.event.trigger(map, 'resize'), 300);
+        });
+    </script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const courseId = [[${course.id}]];
+
+        function toggleLike() {
+            const icon = document.getElementById("like-icon");
+            const countEl = document.getElementById("like-count");
+            const isLiked = icon.classList.contains("fa-solid");
+
+            fetch(`/course/like/${courseId}?cancel=${isLiked}`, {
+                method: "POST"
+            })
+                .then(res => res.json())
+                .then(newCount => {
+                    if (isLiked) {
+                        icon.classList.remove("fa-solid");
+                        icon.classList.add("fa-regular");
+                    } else {
+                        icon.classList.remove("fa-regular");
+                        icon.classList.add("fa-solid");
+                    }
+                    countEl.innerText = newCount;
+                });
+        }
+        /*]]>*/
+    </script>
+
+</div>
+</body>
+</html>

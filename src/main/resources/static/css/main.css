@@ -1,0 +1,323 @@
+/* 공통 레이아웃 */
+header {
+    position: static !important;
+    top: auto !important;
+    z-index: auto !important;
+    margin-bottom: 60px;
+}
+body {
+    background-color: white;
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 30px;
+}
+h2 {
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #343a40;
+}
+
+/* 지역 셀렉트 */
+.region-select {
+    margin-left: auto;
+    max-width: 250px;
+    background-color: #e9ecef;
+    padding-left: 10px;
+}
+.region-select select.form-select {
+    background-color: white;
+    border: 1px solid #e9ecef;
+    font-size: 14px;
+    padding: 6px 12px;
+}
+
+/* 메인 콘텐츠 영역 */
+.main-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 24px;
+    align-items: flex-start;
+}
+.region-main {
+    flex: 1 1 0%;
+    min-width: 0;
+}
+.region-intro {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 40px;
+}
+.region-gallery {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.main-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+.side-imgs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 6px;
+}
+.side-imgs img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* 키워드 뱃지 */
+.keyword-badge {
+    background-color: #e6f0ff;
+    color: #0d6efd;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin: 4px 6px 0 0;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+/* 캘린더 */
+.event-sidebar {
+    flex: 0 0 320px;
+    max-width: 320px;
+    min-width: 280px;
+}
+#calendar {
+    width: 100%;
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+.fc-toolbar-title { font-size: 14px !important; }
+.fc-button { font-size: 11px !important; padding: 2px 6px !important; }
+
+/* 슬라이더 */
+.slider-track {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 20px;
+    transition: transform 0.4s ease;
+}
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    cursor: pointer;
+}
+.slider-arrow.left { left: 10px; }
+.slider-arrow.right { right: 10px; }
+
+/* 카드 공통 */
+.card-box {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 40px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+.place-card {
+    flex: 0 0 auto;
+    width: 300px;
+    transition: transform 0.3s;
+}
+.place-card:hover {
+    transform: scale(1.02);
+}
+.place-card img {
+    height: 180px;
+    object-fit: cover;
+}
+
+/* 뉴스 카드 */
+.news-card {
+    flex: 0 0 auto;
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+.news-card img {
+    height: 220px;
+    object-fit: cover;
+    width: 100%;
+}
+.news-card .card-body {
+    flex-grow: 1;
+    padding: 16px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+.news-card .card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+.news-card .card-text {
+    font-size: 14px;
+    color: #555;
+    max-height: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.news-card .card-footer {
+    padding: 10px 16px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+}
+
+/* 에디터 PICK 섹션 */
+.editor-pick-section {
+    padding-top: 10px;
+    margin-bottom: 40px;
+    background-color: white;
+    border-bottom: 1px solid #dee2e6;
+}
+.editor-pick-section h4 {
+    font-weight: 700;
+    font-size: 20px;
+    color: #343a40;
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+/* 에디터/콘텐츠 버튼 공통화 */
+.editor-category-buttons,
+.content-category-buttons {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-bottom: 1px solid #dee2e6;
+    padding: 0 8px;
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.editor-category-btn,
+.content-category-btn {
+    background-color: white;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: #495057;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 12px 14px;
+    margin-bottom: -1px;
+    border-radius: 0;
+    white-space: nowrap;
+    transition: all 0.2s ease-in-out;
+    flex: 1;
+    text-align: center;
+}
+.editor-category-btn.active,
+.content-category-btn.active {
+    color: #0d6efd;
+    font-weight: 600;
+    border-bottom: 3px solid #0d6efd;
+}
+
+/* 기타 */
+.tag-badge {
+    display: inline-block;
+    background-color: #f0f2f5;
+    color: #333;
+    font-size: 13px;
+    border-radius: 16px;
+    padding: 4px 10px;
+    margin: 3px 4px 3px 0;
+}
+.course-box {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+}
+.filter-box {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 20px;
+}
+.region-filters,
+.tag-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+/* 지역/태그 필터 공통 */
+.region-filters a,
+.tag-filters a {
+    display: inline-block;
+    padding: 6px 14px;
+    margin: 2px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #212529;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* 선택된 경우 */
+.region-filters a.active,
+.tag-filters a.active {
+    background-color: #0d6efd;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+}
+
+.recent-tag {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    color: #333;
+    font-size: 13px;
+    border-radius: 20px;
+    padding: 5px 12px;
+    margin: 4px;
+    position: relative;
+    display: inline-block;
+}
+.recent-tag a {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    text-align: center;
+    font-size: 11px;
+    line-height: 16px;
+    text-decoration: none;
+}
+.recent-tag a:hover {
+    background: #bb2d3b;
+}

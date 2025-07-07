@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>지역 제보 목록</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <style>
+        .category-btn {
+            border-radius: 30px;
+            font-size: 14px;
+            padding: 6px 14px;
+            white-space: nowrap;
+        }
+        .category-btn.active {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+        }
+        .region-btn {
+            border-radius: 30px;
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        .region-btn.active {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+        }
+        .report-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .report-info {
+            flex: 1;
+        }
+        .report-image {
+            width: 120px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-left: 16px;
+        }
+        .category-badge {
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 12px;
+            margin-bottom: 0px;
+            display: inline-block;
+        }
+        .report-title {
+            font-weight: bold;
+            margin: 4px 0;
+        }
+        .small-text {
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+<body class="container py-4">
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="row">
+    <div class="col-lg-9">
+        <div class="card p-3 shadow-sm mb-4">
+            <div class="d-flex align-items-center justify-content-between">
+
+                <div class="d-flex overflow-auto flex-nowrap align-items-center" style="gap: 8px; max-width: 100%;">
+
+                    <button class="btn btn-outline-warning category-btn" data-category="인기">🔥 인기</button>
+                    <button class="btn btn-outline-danger category-btn active" data-category="전체">전체</button>
+
+                    <div style="width: 1px; height: 24px; background-color: #ccc;"></div>
+                        <button class="btn btn-outline-secondary category-btn" data-category="날씨">날씨</button>
+                        <button class="btn btn-outline-secondary category-btn" data-category="맛집">맛집</button>
+                        <button class="btn btn-outline-secondary category-btn" data-category="이벤트">이벤트</button>
+                        <button class="btn btn-outline-secondary category-btn" data-category="동네정보">동네정보</button>
+                        <button class="btn btn-outline-secondary category-btn" data-category="이웃과함께">이웃과함께</button>
+                        <button class="btn btn-outline-secondary category-btn" data-category="소식">소식</button>
+                        <button class="btn btn-outline-secondary category-btn" data-category="반려동물">반려동물</button>
+                        <button class="btn btn-outline-secondary category-btn" data-category="기타">기타</button>
+                </div>
+
+                <a href="/report/write"
+                   class="btn btn-sm btn-primary ms-3"
+                   style="white-space: nowrap; font-size: 13px;">✏ 글쓰기</a>
+            </div>
+        </div>
+
+        <div id="reportList">
+            <div th:each="report : ${reports}" class="report-card"
+                 th:attr="data-category=${report.category}, data-region=${report.region}, data-views=${report.views}">
+                <div class="report-info">
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <span class="category-badge mb-0" th:text="${report.category}">카테고리</span>
+                        <a th:href="@{/report/detail/{id}(id=${report.id})}"
+                           class="report-title text-dark text-decoration-none"
+                           th:text="${report.title}">제보 제목</a>
+                    </div>
+                    <div class="small-text"
+                         th:utext="${#strings.replace(#strings.abbreviate(report.content, 60), '\n', '<br/>')}">내용 요약</div>
+
+                    <div class="small-text mt-1">
+                        <span th:text="${report.region}">지역</span> ·
+                        <span th:text="${report.views + '회 조회'}">조회수</span> ·
+                        <span th:text="'댓글 ' + ${report.commentCount}">댓글 수</span>
+                    </div>
+                </div>
+                <img th:if="${report.imagePath != null}" th:src="@{${report.imagePath}}" class="report-image" alt="이미지">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="filter-box shadow-sm mb-4">
+            <h6 class="fw-bold mb-3">지역별</h6>
+            <div class="region-filters">
+                <a href="javascript:void(0)"
+                   class="region-btn"
+                   data-region="전체">#전체</a>
+                <a href="javascript:void(0)"
+                   class="region-btn"
+                   data-region="서울">#서울</a>
+                <a href="javascript:void(0)"
+                   class="region-btn"
+                   data-region="수원">#수원</a>
+                <a href="javascript:void(0)"
+                   class="region-btn"
+                   data-region="인천">#인천</a>
+                <a href="javascript:void(0)"
+                   class="region-btn"
+                   data-region="광주">#광주</a>
+                <a href="javascript:void(0)"
+                   class="region-btn"
+                   data-region="전주">#전주</a>
+                <a href="javascript:void(0)"
+                   class="region-btn"
+                   data-region="장성">#장성</a>
+                <a href="javascript:void(0)"
+                   class="region-btn"
+                   data-region="부산">#부산</a>
+                <a href="javascript:void(0)"
+                   class="region-btn"
+                   data-region="대구">#대구</a>
+                <a href="javascript:void(0)"
+                   class="region-btn"
+                   data-region="창원">#창원</a>
+                <a href="javascript:void(0)"
+                   class="region-btn"
+                   data-region="대전">#대전</a>
+                <a href="javascript:void(0)"
+                   class="region-btn"
+                   data-region="제주">#제주</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let selectedRegion = "전체";
+
+    function filterReports() {
+        const selectedCategory = document.querySelector(".category-btn.active").getAttribute("data-category");
+
+        const cards = Array.from(document.querySelectorAll(".report-card"));
+
+        cards.forEach(card => {
+            const cardCategory = card.getAttribute("data-category");
+            const cardRegion = card.getAttribute("data-region");
+
+            const matchCategory = (selectedCategory === "전체" || selectedCategory === cardCategory || selectedCategory === "인기");
+            const matchRegion = (selectedRegion === "전체" || selectedRegion === cardRegion);
+
+            card.style.display = (matchCategory && matchRegion) ? "flex" : "none";
+        });
+
+        if (selectedCategory === "인기") {
+            const reportList = document.getElementById("reportList");
+            const sortedCards = cards
+                .filter(card => card.style.display !== "none") // 현재 표시되는 카드만 정렬
+                .sort((a, b) => {
+                    const viewsA = parseInt(a.getAttribute("data-views")) || 0;
+                    const viewsB = parseInt(b.getAttribute("data-views")) || 0;
+                    return viewsB - viewsA;
+                });
+            sortedCards.forEach(card => reportList.appendChild(card)); // DOM 순서 변경
+        }
+    }
+
+    document.querySelectorAll(".category-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".category-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            filterReports();
+        });
+    });
+
+    document.querySelectorAll(".region-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".region-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            selectedRegion = btn.getAttribute("data-region");
+            filterReports();
+        });
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const defaultBtn = document.querySelector('.region-btn[data-region="전체"]');
+        if (defaultBtn) {
+            defaultBtn.classList.add("active");
+        }
+        filterReports();
+    });
+</script>
+
+</body>
+</html>

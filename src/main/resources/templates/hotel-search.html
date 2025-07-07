@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>숙소 검색</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+  <style>
+    .hotel-card img {
+      width: 120px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .nav-tabs .nav-link.active {
+      background-color: #0d6efd;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+    }
+    .nav-tabs .nav-link {
+      border: none;
+      color: #555;
+      border-radius: 30px;
+    }
+    .hotel-card {
+      height: 120px;
+      display: flex;
+      gap: 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 12px;
+      background-color: #fff;
+      transition: all 0.2s ease;
+      align-items: center;
+    }
+    .hotel-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    .hotel-card h6,
+    .hotel-card h6 a {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      display: block;
+    }
+    .real-tabs a.tab-btn {
+      all: unset;
+      font-size: 17px;
+      font-weight: 600;
+      color: #212529 !important;
+      text-decoration: none !important;
+      padding: 12px 24px;
+      border: none;
+      border-bottom: 3px solid transparent;
+      background: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+    .real-tabs a.tab-btn.active {
+      color: #000 !important;
+      font-weight: 700;
+      border-bottom: 3px solid #000;
+    }
+    .hotel-card .info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      overflow: hidden;
+    }
+    .hotel-card .info h6 {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 0 0 4px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .hotel-card .info .small {
+      font-size: 13px;
+      color: #777;
+    }
+  </style>
+</head>
+<body class="container py-4">
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="mb-4">
+  <form th:action="@{/hotels}" method="get" class="row g-2 align-items-center">
+    <div class="col-md-10">
+      <input type="text" name="query" class="form-control" placeholder="호텔명을 입력하세요" th:value="${query}">
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary w-100">검색</button>
+    </div>
+  </form>
+  <div class="mt-2" th:if="${query != null}">
+    <i class="bi bi-search"></i> 검색 결과: <span th:text="${query}">검색어</span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-9">
+    <div class="card shadow-sm p-4 mb-4">
+      <div class="real-tabs d-flex justify-content-around border-bottom mb-4">
+        <a th:href="@{/hotels(region=${regionParam}, category='호텔')}"
+           class="tab-btn"
+           th:classappend="${selectedCategory == '호텔'} ? 'active' : ''">호텔</a>
+        <a th:href="@{/hotels(region=${regionParam}, category='펜션')}"
+           class="tab-btn"
+           th:classappend="${selectedCategory == '펜션'} ? 'active' : ''">펜션</a>
+      </div>
+
+      <div class="hotel-list" th:if="${hotels != null}">
+        <div class="row g-4">
+          <div class="col-md-6"
+               th:each="hotel : ${hotels}"
+               th:if="${hotel.imageUrl != null and !#strings.isEmpty(hotel.imageUrl)}">
+            <div class="hotel-card d-flex align-items-center gap-3" style="height: 120px;">
+
+              <div style="width: 130px; height: 90px; flex-shrink: 0;">
+                <img th:src="${hotel.imageUrl}" alt="호텔 이미지"
+                     onerror="this.closest('.col-md-6').style.display='none';"
+                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+              </div>
+
+              <div class="flex-grow-1 d-flex flex-column justify-content-between overflow-hidden">
+                <div>
+                  <h6 class="fw-bold text-dark mb-1" style="margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    <a href="javascript:void(0)"
+                       th:text="${hotel.name}"
+                       class="text-decoration-none text-dark"
+                       style="display: inline-block; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                       th:attr="data-place-id=${hotel.placeId}, data-name=${hotel.name}, data-map-url=${hotel.mapUrl}"
+                       onclick="recordClickAndRedirect(this)"></a>
+                  </h6>
+                  <div class="text-muted small mb-1" th:text="${hotel.address}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">지역 주소</div>
+                </div>
+                <div class="text-muted small">
+                  ⭐ <span th:text="${hotel.rating}">4.2</span> · 방문자 <span th:text="${hotel.userRatingsTotal}">123</span>명
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-3">
+    <div class="filter-box shadow-sm mb-4" style="background-color: #f5f5f5; border-radius: 8px; padding: 20px;">
+      <h6 class="fw-bold mb-2">지역별</h6>
+      <div class="region-filters d-flex flex-wrap gap-2 mb-3">
+        <a th:each="r : ${regionList}"
+           th:href="@{/hotels(region=${r}, category=${selectedCategory})}"
+           th:text="'#' + ${r}"
+           th:classappend="${regionParam == r} ? 'active filter-btn' : 'filter-btn'"
+           class="filter-btn text-decoration-none">
+        </a>
+      </div>
+    </div>
+
+    <div class="card shadow-sm p-3 mb-4">
+      <h6 class="fw-bold mb-3">최근 본 여행지</h6>
+      <div th:if="${recentRegions != null}" class="d-flex flex-wrap gap-2">
+        <form th:each="r : ${recentRegions}" th:action="@{/hotels/recent/delete}" method="get" class="recent-tag">
+          <span th:text="${r}">지역명</span>
+          <input type="hidden" name="region" th:value="${r}" />
+          <input type="hidden" name="current" th:value="${regionParam}" />
+          <button type="submit" class="btn btn-sm btn-danger rounded-circle">×</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card shadow-sm p-3">
+      <h6 class="fw-bold mb-3">실시간 인기 숙소</h6>
+      <div th:each="item : ${popularContents}" class="mb-2">
+        <div class="p-3 border rounded bg-light">
+          <a th:href="${item.mapUrl}" th:text="${item.name}" target="_blank" class="fw-semibold text-decoration-none text-dark mb-1 d-block" style="font-size: 0.9rem;"></a>
+          <span class="text-muted small" th:text="${item.clickCount + '회 클릭'}"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <img src="/images/courses/banner-course.png" class="img-fluid rounded shadow-sm" alt="배너 이미지">
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function recordClickAndRedirect(element) {
+    const placeId = element.getAttribute("data-place-id");
+    const name = element.getAttribute("data-name");
+    const mapUrl = element.getAttribute("data-map-url");
+    const region = /*[[${regionParam}]]*/ '수원';
+    const category = /*[[${selectedCategory}]]*/ '호텔';
+
+    fetch(`/hotels/click/${placeId}?name=${encodeURIComponent(name)}&mapUrl=${encodeURIComponent(mapUrl)}&region=${region}&category=${category}`, {
+      method: 'POST'
+    }).then(() => {
+      window.open(mapUrl, '_blank');
+    });
+  }
+</script>
+
+</body>
+</html>

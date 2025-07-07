@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>여행 콘텐츠 | Radar</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+</head>
+<body class="container py-4">
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="row">
+  <div class="col-lg-9">
+    <div class="editor-pick-section card-box">
+      <h4 class="editor-title">📍 에디터 PICK</h4>
+        <div class="editor-category-buttons">
+          <button class="editor-category-btn active" data-category="all">전체</button>
+          <button class="editor-category-btn" data-category="date">데이트</button>
+          <button class="editor-category-btn" data-category="kid">아이와</button>
+          <button class="editor-category-btn" data-category="family">가족과</button>
+          <button class="editor-category-btn" data-category="photo">포토존</button>
+          <button class="editor-category-btn" data-category="brunch">브런치</button>
+          <button class="editor-category-btn" data-category="cafe">대형카페</button>
+        </div>
+      <div class="position-relative overflow-hidden">
+        <div class="d-flex slider-track" id="placeSlider" style="gap: 16px;">
+          <a th:each="place : ${places}"
+             th:href="@{${place.link}}" target="_blank"
+             class="text-decoration-none place-card"
+             th:attr="data-category=${place.category}">
+            <div class="card shadow-sm w-100">
+              <img th:src="@{'/images/' + ${region} + '/' + ${place.imageUrl}}"
+                   class="card-img-top" style="height: 180px; object-fit: cover;">
+              <div class="card-body">
+                <h6 class="card-title mb-1" th:text="${place.name}">장소명</h6>
+                <p class="card-text text-muted small mb-0" th:text="${place.tag}">#태그</p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <button onclick="prevPlace()" class="slider-arrow left">&lt;</button>
+        <button onclick="nextPlace()" class="slider-arrow right">&gt;</button>
+      </div>
+    </div>
+
+    <div class="editor-pick-section card-box">
+      <div class="content-category-buttons">
+        <button class="content-category-btn active" data-category="all">전체</button>
+        <button class="content-category-btn" data-category="tour">관광</button>
+        <button class="content-category-btn" data-category="food">음식</button>
+        <button class="content-category-btn" data-category="info">기초정보</button>
+        <button class="content-category-btn" data-category="course">코스</button>
+        <button class="content-category-btn" data-category="shopping">쇼핑</button>
+        <button class="content-category-btn" data-category="tv">TV방영</button>
+      </div>
+
+      <div class="row content-list">
+        <div th:each="content : ${travelCategories}"
+             class="col-md-6 col-lg-4 mb-4 content-card"
+             th:attr="data-category=${content.category}">
+          <div class="card h-100 shadow-sm">
+            <img th:src="${content.imageUrl}" class="card-img-top" style="height: 180px; object-fit: cover;">
+            <div class="card-body">
+              <h6 class="card-title mb-1" th:text="${content.title}">콘텐츠 제목</h6>
+              <p class="card-text text-muted small" th:text="${content.source}">출처</p>
+              <a href="#"
+                 class="btn btn-outline-primary btn-sm mt-2 record-click-btn"
+                 th:attr="data-id=${content.id}, data-link=${content.link}">
+                자세히 보기
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-3">
+        <button class="btn btn-outline-secondary" id="loadMoreBtn">더보기</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-3">
+
+    <div class="filter-box shadow-sm mb-4" style="background-color: #f5f5f5; border-radius: 8px; padding: 20px;">
+    <h6 class="fw-bold mb-2">지역별</h6>
+      <div class="region-filters d-flex flex-wrap gap-2 mb-3">
+        <a th:each="r : ${regionList}"
+           th:href="@{/travel-content(region=${r})}"
+           th:text="'#' + ${r}"
+           th:classappend="${regionParam == r} ? 'active filter-btn' : 'filter-btn'"
+           class="text-decoration-none">
+        </a>
+      </div>
+    </div>
+
+    <div class="card shadow-sm p-3 mb-4">
+      <h6 class="fw-bold mb-3">최근 본 여행지</h6>
+      <div th:if="${recentRegions != null}" class="d-flex flex-wrap gap-2">
+        <form th:each="r : ${recentRegions}"
+              th:action="@{/travel-content/recent/delete}"
+              method="get"
+              accept-charset="UTF-8"
+              class="recent-tag"
+              style="display: inline-flex; align-items: center; gap: 4px; border: 1px solid #ccc; padding: 6px 10px; border-radius: 20px; background-color: #f8f9fa;">
+
+          <span th:text="${r}">지역명</span>
+
+          <input type="hidden" name="region" th:value="${r}" />
+          <input type="hidden" name="current" th:value="${regionParam}" />
+
+          <button type="submit" class="btn btn-sm btn-danger rounded-circle" style="line-height: 1; padding: 0 6px;">×</button>
+        </form>
+      </div>
+
+    </div>
+
+    <div class="card shadow-sm p-3 popular-section mb-4">
+      <h6 class="fw-bold mb-3">많이 본 콘텐츠</h6>
+
+      <div th:each="item : ${popularContents}" class="popular-item mb-2">
+        <div class="p-3 border rounded bg-light" style="line-height: 1.4;">
+          <a th:href="${item.link}" th:text="${item.title}" target="_blank"
+             class="d-block fw-semibold text-decoration-none text-dark mb-1"
+             style="font-size: 0.9rem;"></a>
+          <span class="text-muted small" th:text="${item.clickCount + '회 클릭'}"></span>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const contentCards = document.querySelectorAll('.content-card');
+    const contentButtons = document.querySelectorAll('.content-category-btn');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    let visibleCount = 12;
+
+    function updateVisibleCards(category) {
+      let count = 0;
+      contentCards.forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        const match = category === 'all' || cardCategory === category;
+        if (match && count < visibleCount) {
+          card.style.display = 'block';
+          count++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      const matchedCards = Array.from(contentCards).filter(card =>
+              category === 'all' || card.getAttribute('data-category') === category
+      );
+      loadMoreBtn.style.display = (visibleCount >= matchedCards.length) ? 'none' : 'inline-block';
+    }
+
+    contentButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        contentButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        visibleCount = 12;
+        updateVisibleCards(btn.getAttribute('data-category'));
+      });
+    });
+
+    loadMoreBtn.addEventListener('click', () => {
+      visibleCount += 12;
+      const activeBtn = document.querySelector('.content-category-btn.active');
+      updateVisibleCards(activeBtn.getAttribute('data-category'));
+    });
+
+    updateVisibleCards('all'); // 최초 실행 시 전체 카테고리 보여줌
+
+    const slider = document.getElementById("placeSlider");
+    let scrollIndex = 0;
+    const cardWidth = 316;
+
+    window.nextPlace = function () {
+      scrollIndex++;
+      slider.style.transform = `translateX(-${scrollIndex * cardWidth}px)`;
+    }
+
+    window.prevPlace = function () {
+      if (scrollIndex > 0) scrollIndex--;
+      slider.style.transform = `translateX(-${scrollIndex * cardWidth}px)`;
+    }
+
+    document.querySelectorAll(".editor-category-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".editor-category-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const selected = btn.getAttribute("data-category");
+
+        document.querySelectorAll(".place-card").forEach(card => {
+          const category = card.getAttribute("data-category");
+          card.style.display = (selected === "all" || selected === category) ? "block" : "none";
+        });
+
+        scrollIndex = 0;
+        slider.style.transform = "translateX(0)";
+      });
+    });
+
+    document.querySelectorAll('.record-click-btn').forEach(btn => {
+      btn.addEventListener('click', function (event) {
+        event.preventDefault();
+        const id = this.dataset.id;
+        const link = this.dataset.link;
+
+        fetch('/content/click/' + id, { method: 'POST' })
+                .then(() => {
+                  window.open(link, '_blank');
+                })
+                .catch(err => {
+                  console.error('클릭 기록 실패:', err);
+                });
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
