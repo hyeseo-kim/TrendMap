@@ -88,6 +88,7 @@ Spring Boot 기반의 **지역 실시간 트렌드 시각화 플랫폼**입니�
 
 <details>
 <summary>📁 프로젝트 구조 보기</summary>
+    
 ````text
 src/
 ├── main/
@@ -193,9 +194,9 @@ src/
     └── java/
         └── com.realtimeradar/
             └── (Test Classes)   
-````
 
-</details>
+```` 
+</details> 
 ---
 
 ## 🔧 실행 방법
