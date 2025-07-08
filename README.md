@@ -85,23 +85,117 @@ Spring Boot 기반의 **지역 실시간 트렌드 시각화 플랫폼**입니�
 ---
 
 ## 🗂️ 프로젝트 구조
-```
-radar/
-├── controller/
-├── service/
-├── repository/
-├── dto/
-├── entity/
-├── templates/
-│ ├── home.html
-│ ├── hotels.html
-│ ├── course-list.html
-│ ├── report-list.html
-│ └── fragments/
-├── static/
-│ └── css, js, images
-└── application.properties
-```
+
+<details>
+<summary>📁 프로젝트 구조 보기</summary>
+````
+src/
+├── main/
+│   ├── java/
+│   │   └── com.realtimeradar/
+│   │       ├── config/
+│   │       │   └── WebConfig.java
+│   │       ├── controller/
+│   │       │   ├── CommentController.java
+│   │       │   ├── CourseController.java
+│   │       │   ├── HashtagController.java
+│   │       │   ├── HomeController.java
+│   │       │   ├── HotelController.java
+│   │       │   ├── NewsController.java
+│   │       │   ├── PlaceController.java
+│   │       │   ├── ReportController.java
+│   │       │   ├── TravelContentController.java
+│   │       │   └── TrendController.java
+│   │       ├── crawler/
+│   │       │   └── HashtagCrawler.java
+│   │       ├── dto/
+│   │       │   ├── CommentDTO.java
+│   │       │   ├── CourseDTO.java
+│   │       │   ├── EventDTO.java
+│   │       │   ├── HotelDTO.java
+│   │       │   ├── NewsApiResponse.java
+│   │       │   ├── NewsDTO.java
+│   │       │   ├── PlaceDTO.java
+│   │       │   ├── ReportDTO.java
+│   │       │   └── TrendKeywordDTO.java
+│   │       ├── entity/
+│   │       │   ├── Comment.java
+│   │       │   ├── Course.java
+│   │       │   ├── CourseLocation.java
+│   │       │   ├── Hashtag.java
+│   │       │   ├── HotelClick.java
+│   │       │   ├── Keyword.java
+│   │       │   ├── News.java
+│   │       │   ├── Place.java
+│   │       │   ├── RegionKeywordCount.java
+│   │       │   ├── Report.java
+│   │       │   ├── TravelCategory.java
+│   │       │   └── TrendingKeyword.java
+│   │       ├── repository/
+│   │       │   ├── CommentRepository.java
+│   │       │   ├── CourseLocationRepository.java
+│   │       │   ├── CourseRepository.java
+│   │       │   ├── HashtagRepository.java
+│   │       │   ├── HotelClickRepository.java
+│   │       │   ├── KeywordRepository.java
+│   │       │   ├── NewsRepository.java
+│   │       │   ├── PlaceRepository.java
+│   │       │   ├── ReportRepository.java
+│   │       │   ├── TravelCategoryRepository.java
+│   │       │   └── TrendRepository.java
+│   │       ├── service/
+│   │       │   ├── BlogHashtagService.java
+│   │       │   ├── CommentService.java
+│   │       │   ├── CommentServiceImpl.java
+│   │       │   ├── CourseService.java
+│   │       │   ├── CourseServiceImpl.java
+│   │       │   ├── EventService.java
+│   │       │   ├── FileUploadService.java
+│   │       │   ├── HashtagService.java
+│   │       │   ├── HotelSearchService.java
+│   │       │   ├── KeywordService.java
+│   │       │   ├── NewsService.java
+│   │       │   ├── PlaceService.java
+│   │       │   ├── PlaceServiceImpl.java
+│   │       │   ├── ReportService.java
+│   │       │   ├── ReportServiceImpl.java
+│   │       │   ├── TravelCategoryService.java
+│   │       │   ├── WeatherService.java
+│   │       │   └── YoutubeSearchService.java
+│   │       └── RadarApplication.java
+│
+├── resources/
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── main.css
+│   │   ├── js/
+│   │   │   └── place-filter.js
+│   │   └── images/
+│   ├── templates/
+│   │   ├── course/
+│   │   │   ├── course-detail.html
+│   │   │   └── course-list.html
+│   │   ├── error/
+│   │   │   └── 404.html
+│   │   ├── fragments/
+│   │   │   └── header.html
+│   │   ├── report/
+│   │   │   ├── report-detail.html
+│   │   │   ├── report-list.html
+│   │   │   └── report-write.html
+│   │   ├── home.html
+│   │   ├── hotel-search.html
+│   │   ├── travel-content.html
+│   │   └── trending.html
+│   └── application.properties
+│
+└── test/
+    └── java/
+        └── com.realtimeradar/
+            └── (Test Classes)   
+````
+
+</details>
 ---
 
 ## 🔧 실행 방법
@@ -133,10 +227,10 @@ openweather.api.key=YOUR_OPENWEATHER_API_KEY
 
 ### 🚀 향후 개선 예정 기능
 
-- 사용자 즐겨찾기 장소 저장
-- 지역 별 인기 여행지 순위
-- 카카오톡 공유 기능 (진행중)
-- 다국어 지원
+- ✅ 카카오톡 공유 기능 (진행중)
+- ⏳ 사용자 즐겨찾기 장소 저장
+- ⏳ 지역 별 인기 여행지 순위
+- ⏳ 다국어 지원
 
 ---
 
