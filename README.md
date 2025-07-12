@@ -18,6 +18,22 @@ Spring Boot 기반의 **지역 실시간 트렌드 시각화 플랫폼**입니�
 
 
 ---
+
+## 🛠️ 기술 스택
+|           영역           |                             기술                             |
+|-------------------------|-------------------------------------------------------------|
+|        Languages        |     Java 17                                                 |
+|        Framework        |     Spring Boot 3.x, Spring MVC, Spring Data JPA            |
+|          View           |     Thymeleaf, Bootstrap 5                                  |
+|        Database         |     MySQL 8.x                                               |
+|          ORM            |     Hibernate (JPA)                                         |
+|        Build Tool       |     Gradle                                                  |
+|       Web Crawling      |     Selenium, Jsoup                                         |
+|        Scheduler        |     Spring Scheduler                                        |
+|         API 활용         |     Google Maps API, OpenWeatherMap API                     |
+|         유틸리티          |     Lombok, JSTL                                            |
+
+---
 ## 💡 주요 기능
 
 ### 📍 지역 기반 실시간 정보
@@ -96,22 +112,6 @@ Spring Boot 기반의 **지역 실시간 트렌드 시각화 플랫폼**입니�
 누구나 지역 소식을 제보할 수 있고, 글/댓글/추천/비추천 등의 기능을 통해 소통할 수 있는 공간입니다.
 
 <img src="./docs/images/community.jpg" alt="커뮤니티 기능" width="100%"/>
-
----
-
-## 🛠️ 기술 스택
-|           영역           |                             기술                             |
-|-------------------------|-------------------------------------------------------------|
-|        Languages        |     Java 17                                                 |
-|        Framework        |     Spring Boot 3.x, Spring MVC, Spring Data JPA            |
-|          View           |     Thymeleaf, Bootstrap 5                                  |
-|        Database         |     MySQL 8.x                                               |
-|          ORM            |     Hibernate (JPA)                                         |
-|        Build Tool       |     Gradle                                                  |
-|       Web Crawling      |     Selenium, Jsoup                                         |
-|        Scheduler        |     Spring Scheduler                                        |
-|         API 활용         |     Google Maps API, OpenWeatherMap API                     |
-|         유틸리티          |     Lombok, JSTL                                            |
 
 ---
 
