@@ -91,7 +91,7 @@ Spring Boot 기반의 **지역 실시간 트렌드 시각화 플랫폼**입니�
 
 ---
 
-## 🗂️ 프로젝트 구조
+## 프로젝트 구조
 
 <details>
 <summary>📁 프로젝트 구조 보기</summary>
@@ -205,7 +205,7 @@ src/
 ```` 
 </details> 
 
-## 🔧 실행 방법
+## 실행 방법
 
 ### 1. `application.properties` 환경 설정
 ```properties
@@ -218,33 +218,34 @@ openweather.api.key=YOUR_OPENWEATHER_API_KEY
 ```
 
 ### 2. Gradle 빌드 및 서버 실행
+
+```bash
 ./gradlew bootRun
+```
 
 ### 3. 브라우저에서 접속
 ▶ http://localhost:8080/realtime-news?region=수원
 
 ---
 
-## 👩🏻‍💻 개발자 정보
+## 개발자 정보
 
 - 김혜서
-- GitHub : @hyeseo-kim
+- GitHub : [@hyeseo-kim](https://github.com/hyeseo-kim)
 - Email : hyeseo0614@gmail.com
 
 ---
 
-### 🚀 향후 개선 예정 기능
+### 향후 개선 예정 기능
 
-- ✅ 카카오톡 공유 구현 완료
-- ⏳ 사용자 즐겨찾기 장소 저장
-- ⏳ 지역 별 인기 여행지 순위
-- ⏳ 다국어 지원
+- 카카오톡 공유 구현 완료
+- 사용자 즐겨찾기 장소 저장
+- 지역 별 인기 여행지 순위
+- 다국어 지원
 
 ---
 
-### 🎥 데모 영상
+### 데모 영상
 (추후 배포 또는 영상 업로드 시 링크 삽입 예정)
-
----
 
 
