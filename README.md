@@ -83,7 +83,9 @@ Spring Boot 기반의 **지역 실시간 트렌드 시각화 플랫폼**입니�
 
 ## 전체 흐름도
 
-````
+아래는 사용자의 기본적인 서비스 흐름입니다:
+
+````mermaid
 graph TD
 A[홈 접속] --> B[지역 선택]
 B --> C[뉴스, 날씨, 장소 추천 등 통합 제공]
@@ -93,6 +95,10 @@ D --> E2[여행 콘텐츠 탐색]
 D --> E3[호텔/펜션 검색]
 D --> E4[제보 커뮤니티 글 등록]
 ````
+
+<p align="center">
+  <img src="docs/images/trendmapflow.png" alt="TrendMap 사용자 흐름도" width="600"/>
+</p>
 
 ---
 
